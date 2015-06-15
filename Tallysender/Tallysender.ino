@@ -5,7 +5,7 @@
 byte mac[] = {
   0x90, 0xA2, 0xDA, 0x00, 0xF2, 0x00
 };      // <= SETUP!
-IPAddress ip(192, 168, 8, 200);              // <= SETUP!
+//IPAddress ip(192, 168, 8, 200);              // <= SETUP!
 IPAddress server(224,0,0,20);             // <= MULTICAST
 //IPAddress server(192, 168, 8, 104);             // <= UNICAST
 #include <ATEM.h>
@@ -15,12 +15,12 @@ EthernetClient client;
 EthernetUDP udp;
 
 void setup() {
-  Ethernet.begin(mac, ip);
+  Ethernet.begin(mac);
   Serial.begin(115200);
   Serial.println("Serial started");
 
-  AtemSwitcher.begin(IPAddress(192, 168, 8, 240), 56417);    // <= SETUP!
-  AtemSwitcher.connect();
+  //AtemSwitcher.begin(IPAddress(192, 168, 8, 240), 56417);    // <= SETUP!
+  //AtemSwitcher.connect();
   udp.beginMulti(server, 3000);
 }
 
@@ -31,14 +31,20 @@ bool live = false;
 void loop() {
 
   // Check for packets, respond to them etc. Keeping the connection alive!
-  AtemSwitcher.runLoop();
+  //AtemSwitcher.runLoop();
 
   // If connection is gone anyway, try to reconnect:
-  if (AtemSwitcher.isConnectionTimedOut())  {
-    Serial.println("Connection to ATEM Switcher has timed out - reconnecting!");
-    AtemSwitcher.connect();
-  }
-  setTallys();
+  //if (AtemSwitcher.isConnectionTimedOut())  {
+  //  Serial.println("Connection to ATEM Switcher has timed out - reconnecting!");
+  //  AtemSwitcher.connect();
+  //}
+  //setTallys();
+  sendChar("010000000");
+  delay(1000);
+  sendChar("20000000");
+  delay(1000);
+  sendChar("12000000");
+  delay(1000);
   delay(20);
   Serial.println("send");
 }
@@ -55,9 +61,12 @@ void setTallys() {
     }
   }
   Serial.println(tallys);
-  
+  sendChar(tallys);
+}
+
+void sendChar(char packet[8]) {
   udp.beginPacket(server, 3000);
-  udp.write(tallys, 8);
-  udp.endPacket();
+  udp.write(packet, 8);
+  udp.endPacket();  
 }
 

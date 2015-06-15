@@ -3,30 +3,37 @@
 #include <WiFiUdp.h>
 #include <ESP8266WebServer.h>
  
-const char* ssid = "Drunken Records on tour";
-const char* password = "recordsmobile";
+const char* ssid = "CTDO-g";
+const char* password = "ctdo2342";
 IPAddress multicastAddress (224, 0, 0, 20);
 
 WiFiUDP udp;
- 
-const int led = 13;
-const int led2 = 12;
-int id = 0; // 0-7 eigentlich einstellbar ueber dip switch.
+
+// SETTING GPIO PIN constants
+const int led = 5, // green preview led
+          led2 = 4, // red live led
+          dip1 = 13,
+          dip2 = 12,
+          dip3 = 14;
+int id = 0; // 0-7 einstellbar ueber dip switch. initialwert 0
 
 byte packetBuffer[512];
 
 void preview() {
   digitalWrite(led, 1);
   digitalWrite(led2, 0);
+  Serial.println("preview");
 }
 
 void live() {
   digitalWrite(led, 0);
   digitalWrite(led2, 1);
+  Serial.println("live");
 }
 void off() {
   digitalWrite(led, 0);
   digitalWrite(led2, 0);
+  Serial.println("unused");
 }
 void connect() {
   
@@ -73,6 +80,9 @@ void setup(void)
   Serial.begin(115200);
   pinMode(led, OUTPUT);
   pinMode(led2, OUTPUT);
+  pinMode(dip1, INPUT);
+  pinMode(dip2, INPUT);
+  pinMode(dip3, INPUT);
   digitalWrite(led, 0);
   digitalWrite(led2, 0);
   
@@ -88,6 +98,6 @@ void loop(void)
   if(noBytes) {
     readData(noBytes); 
   }
-
+  id = (digitalRead(dip1) << 0) + (digitalRead(dip2) << 1) + (digitalRead(dip3) << 2);
 } 
 
