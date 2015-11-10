@@ -3,10 +3,11 @@
 #include <WiFiUdp.h>
 #include <ESP8266WebServer.h>
  
-const char* ssid = "CTDO-g";
-const char* password = "ctdo2342";
+const char* ssid = "Drunken Records_2";
+const char* password = "drbeihenneeeeeee";
 IPAddress multicastAddress (224, 0, 0, 20);
-
+const char* ap_ssid = "Wifitally";
+const char* ap_password = "wifitally2342";
 WiFiUDP udp;
 
 // SETTING GPIO PIN constants
@@ -38,6 +39,8 @@ void off() {
 void connect() {
   
   Serial.println("Connecting");
+  WiFi.mode(WIFI_AP_STA);
+  WiFi.softAP(ap_ssid, ap_password);
   // Connect to WiFi network
   WiFi.begin(ssid, password);
   // Wait for connection
@@ -51,6 +54,7 @@ void connect() {
     Serial.print(".");
   }
   
+  
   Serial.println("");
   Serial.print("Connected to ");
   Serial.println(ssid);
@@ -58,11 +62,16 @@ void connect() {
   Serial.println(WiFi.localIP());
   
   udp.beginMulticast(WiFi.localIP(), multicastAddress, 3000);
+  udp.beginMulticast(WiFi.softAPIP(), multicastAddress, 3000);
   
 }
 
 void readData(int noBytes) {
   udp.read(packetBuffer,noBytes);
+  if(char(packetBuffer[0]) =='d') {
+    
+    return;
+  }
   if(noBytes != 8) {
    return; 
   }
@@ -85,6 +94,13 @@ void setup(void)
   pinMode(dip3, INPUT);
   digitalWrite(led, 0);
   digitalWrite(led2, 0);
+  id = (digitalRead(dip1) << 0) + (digitalRead(dip2) << 1) + (digitalRead(dip3) << 2);
+  for(int i=0; i<=id; i++) {
+    digitalWrite(led, 1);
+    delay(100);
+    digitalWrite(led, 0);
+    delay(100);
+  }
   
   connect();
 }
