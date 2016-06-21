@@ -1,0 +1,23 @@
+Nr.,Best.-Nr.   ,RoHS-konform?,Hinweise,Menge,Hersteller-Teilenr. ,Hersteller / Beschreibung,Verfügbarkeit,Stückpreis,Positionspreis,Rabattpreis
+1,1332158,YES,,3.0,"MCP73831T-2ACI/OT","Batterie-/Akkutyp:Li-Ionen, Li-Polymer; Eingangsspannung:6V; Ladespannung:4.2V; Ladestrom, max.:500mA; Bauform:SOT-23; Anzahl der Pins:5Pin(s); Anzahl der Zellen:1; Betriebstemperatur, min",14724,0.5430,1.63,,
+2,2320017,YES,,6.0,"JS102011SAQN","Produktpalette:Baureihe JS; Kontaktkonfiguration:SPDT; Schalterfunktion:Ein-Keine-Ein; Schaltermontage:Oberflächenmontage; Kontaktstrom, max.:100mA; AC-Kontaktspannung, max.:-; DC-",3092,0.4800,2.88,,
+3,1087183,YES,,3.0,"LF33ABDT-TR","Eingangsspannung, min.:3V; Eingangsspannung, max.:16V; Nennausgangsspannung:3.3V; Ausgangsstrom:0.5A; Dropout-Spannung Vdo:400mV; Bauform:TO-252; Anzahl der Pins:3Pin(s); Betriebstemperatur, m",4328,0.5140,1.54,,
+4,2497168,YES,,3.0,"1210B225K101CT","Produktpalette:-; Kapazität:2.2µF; Kapazitätstoleranz:± 10%; Dielektrikum:X7R; Nennspannung:100V; Keramikkondensatorgehäuse:1210 [Metrisch 3225]; Betriebstemperatur, min.:-55°C;",2993,0.5820,1.75,,
+5,2497159,YES,,5.0,"1210B104K201CT","Produktpalette:-; Kapazität:0.1µF; Kapazitätstoleranz:± 10%; Dielektrikum:X7R; Nennspannung:200V; Keramikkondensatorgehäuse:1210 [Metrisch 3225]; Betriebstemperatur, min.:-55°C;",2675,0.1800,0.90,,
+6,1716770,YES,,10.0,"OVS-0603","LED-Farbe:Blau; LED-Montage:Oberflächenmontage; Leuchtengröße:0.8mm x 1mm; Durchlassstrom If:30mA; Durchlassspannung:3.2V; Wellenlänge, typ.:465nm; Lichtstärke:100mcd; Abstrahlwinkel:130°; Lin",52798,0.2450,2.45,,
+7,1857300,YES,,12.0,"IRLML6346TRPBF.","Wandlerpolarität:n-Kanal; Dauer-Drainstrom Id:3.4A; Drain-Source-Spannung Vds:30V; Betriebswiderstand, Rds(on):0.046ohm; Rds(on)-Messspannung Vgs:4.5V; Schwellenspannung Vgs:800mV; Verl",12524,0.1680,2.02,,
+8,1521869,YES,,3.0,"1981584-1","USB-Steckverbinder:Micro-USB Typ AB; USB-Version:USB 2.0; Ausführung:Buchse; Anzahl der Positionen:5-polig; Steckverbindermontage:Oberflächenmontage; Ausrichtung:Rechtwinklig; Kontaktma",2572,1.5900,4.77,,
+9,2309108,Y-EX,,100.0,"RC0603JR-071KL","Produktpalette:Baureihe RC; Widerstand:1kohm; Nennspannung:50V; Bauform:0603 [Metrisch 1608]; Nennleistung:100mW; Widerstandstoleranz:± 5%; Verpackung:Gurtabschnitt; Widerstandselem",31754,0.0080,0.80,,
+10,1738887,Y-EX,,20.0,"CRCW060347R0FKEAHP","Produktpalette:Baureihe AEC-Q200 CRCW; Widerstand:47ohm; Nennspannung:75V; Bauform:0603 [Metrisch 1608]; Nennleistung:250mW; Widerstandstoleranz:± 1%; Verpackung:Gurtabschnitt; Wi",312025,0.0948,1.90,,
+11,2333578,YES,,100.0,"CR0603-FX-3302ELF","Produktpalette:Baureihe CR; Widerstand:33kohm; Nennspannung:50V; Bauform:0603 [Metrisch 1608]; Nennleistung:100mW; Widerstandstoleranz:± 1%; Verpackung:Gurtabschnitt; Widerstandsel",5440,0.0227,2.27,,
+12,2073472,YES,,100.0,"MCMR06X3300FTL","Produktpalette:Baureihe MCMR; Widerstand:330ohm; Nennspannung:75V; Bauform:0603 [Metrisch 1608]; Nennleistung:100mW; Widerstandstoleranz:± 1%; Verpackung:Gurtabschnitt; Widerstand",43926,0.0128,1.28,,
+13,2008337,YES,,100.0,"CR0603-FX-2001ELF","Produktpalette:Baureihe CR; Widerstand:2kohm; Nennspannung:50V; Bauform:0603 [Metrisch 1608]; Nennleistung:100mW; Widerstandstoleranz:± 1%; Verpackung:Gurtabschnitt; Widerstandselem",24458,0.0227,2.27,,
+14,1960992,YES,,6.0,"B3FS1000P","Illumination:Nicht beleuchtet; Betätigungskraft:0.98N; DC-Kontaktspannung, nom.:24V; Kontaktstrom, max.:50mA; Schalteranschlüsse:Lötanschluss; Produktpalette:B3FS Series; Betätiger:Flach; H",Out of Stock,0.5960,3.58,,
+15,9238603,YES,,100.0,"RC0603FR-0710KL","Produktpalette:Baureihe RC; Widerstand:10kohm; Nennspannung:50V; Bauform:0603 [Metrisch 1608]; Nennleistung:100mW; Widerstandstoleranz:± 1%; Verpackung:Gurtabschnitt; Widerstandsel",296769,0.0068,0.68,,
+16,2335791,YES,,6.0,"KAAF-5050RGBS-13","LED-Farbe:Rot, Grün, Blau; LED-Montage:Oberflächenmontage; Leuchtengröße:-; Abstrahlwinkel:120°; Linsenform:Rund; Durchlassstrom / Farbe:R 50mA, G 30mA, B 30mA; Lichtstärke / Farbe:R 1.4c",4844,1.9400,11.64,,
+
+,,,,,,,Zwischensumme,42.35
+,,,,,,,Warengesamtsumme,42.35
+,,,,,,,Versandkosten,0.00
+,,,,,,,USt.,Unknown
+,,,,,,,Gesamt,42.35
