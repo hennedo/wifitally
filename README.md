@@ -23,7 +23,7 @@ To get the Wifitally to work you will also need to have some sort of Arduino Eth
 
 * Download Arduino IDE if you do not already have it on your computer (www.arduino.cc)
 * Install the Skaarhoj Libraries (http://skaarhoj.com/wiki/index.php/ATEM\_Arduino\_Library)
-* Patch your Ethernet library. https://github.com/aallan/Arduino/commit/3811729f82ef05f3ae43341022e7b65a92d333a2
+* Patch your Ethernet library. (for details see [Details on the Ethernet lib](#ethernet))
 
 ## Usage
 Get the PCB design for the Tally, which is located in hardware/ and get it manufactured by your favourite PCB Manufacturer or do it yourself if you are able to etch two sided PCBs.
@@ -70,6 +70,96 @@ If you got your voltage divider right, do one of the following:
 * Connect your almost empty battery to the Wifitally and open up the configuration page. Hit "Update battery threshold". The Wifitally will use the current voltage of the battery as threshold for the low battery warning.
 * Measure the current voltage of your battery while the tally is powered on, go to the configuration and enter the measured voltage in to the corresponding input (in millivolts please!) and then enter your desired warning and cutoff voltage.
 
+## <a name="ethernet"></a> Few words on the Ethernet Library
+You might run into problems with the Ethernet Library.
+There are different Ethernet Shields available. Some use the W5500 chip, some the W5100.
+The 5100 Chip is supported by the Ethernet library, the W5500 chip needs to have the Ethernet2 lib, which ships with the Arduino IDE from arduino.org.
+
+### I am using the W5100 chip and will need the Ethernet lib
+fine! you do not have to change anything in the code :)
+
+However, if your Arduino IDE throws an error, that there is no method "beginMulticast" have a look at this:
+
+https://github.com/aallan/Arduino/commit/3811729f82ef05f3ae43341022e7b65a92d333a2
+
+but change "beginMulti" to "beginMulticast" in both files.
+
+### I am using the W500 chip and will need the Ethernet2 lib
+This concerns you most likely if you got your shield from Arduino.org. Or if you use the Ethernet shield with POE Support. It's called "Ethernet Shield 2"
+
+You will have to do some work on the EthernetUdp2 lib, the Transmitter code and the ATEM Lib.
+Do not worry - it's not that hard.
+First of all, you have to see where the librarys are installed, see (https://www.arduino.cc/en/Guide/Libraries) for help.
+
+#### EthernetUdp2
+You will need to find two files: EthernetUdp2.h and EthernetUdp2.cpp.
+On the OSX app you will find them by browsing to your Arduino.app, rightclick it and "Show Package Contents" from there on, those files are located in /Contents/Java/libraries/Ethernet2/
+
+##### EthernetUdp2.h
+Find:
+```c
+public:
+  EthernetUDP();  // Constructor
+  virtual uint8_t begin(uint16_t);	// initialize, start listening on specified port. Returns 1 if successful, 0 if there are no sockets available to use
+```
+and add
+```c
+virtual uint8_t beginMulticast(IPAddress, uint16_t);	// begin multicast
+```
+after.
+
+##### EthernetUdp2.cpp
+Go to the bottom of the file and add
+```c
+/* Start EthernetUDP socket, listening at local port PORT */
+uint8_t EthernetUDP::beginMulticast(IPAddress ip, uint16_t port) {
+    if (_sock != MAX_SOCK_NUM)
+        return 0;
+
+    for (int i = 0; i < MAX_SOCK_NUM; i++) {
+        uint8_t s = w5500.readSnSR(i);
+        if (s == SnSR::CLOSED || s == SnSR::FIN_WAIT) {
+            _sock = i;
+            break;
+        }
+    }
+
+    if (_sock == MAX_SOCK_NUM)
+        return 0;
+
+
+    // Calculate MAC address from Multicast IP Address
+    byte mac[] = {  0x01, 0x00, 0x5E, 0x00, 0x00, 0x00 };
+
+    mac[3] = ip[1] & 0x7F;
+    mac[4] = ip[2];
+    mac[5] = ip[3];
+
+    w5500.writeSnDIPR(_sock, rawIPAddress(ip));   //239.255.0.1
+    w5500.writeSnDPORT(_sock, port);
+    w5500.writeSnDHAR(_sock,mac);
+
+    _remaining = 0;
+
+    socket(_sock, SnMR::UDP, port, SnMR::MULTI);
+
+    return 1;
+}
+```
+
+
+#### ATEM
+```
+In file included from transmitter.ino:7:0:
+/Users/henne/Documents/Arduino/libraries/ATEM/ATEM.h:34:26: fatal error: EthernetUdp2.h: No such file or directory
+ #include "EthernetUdp.h"
+```
+If you try to compile the code, you might see this error message. Just open the referenced file, and search for `#include "EthernetUdp.h"`. Replace `EthernetUdp.h` with `EthernetUdp2.h`
+
+#### Transmitter code
+In line 2 and 3 of the transmitter code, you will find the includes for the Ethernet library.
+Replace `EthernetUdp.h` with `EthernetUdp2.h`and `Ethernet.h` with `Ethernet2.h`
+
 ## Future Releases
 Current status of this Project is still beta. There is some work to be done in the future releases, including:
 
@@ -82,7 +172,9 @@ Current status of this Project is still beta. There is some work to be done in t
 * Adding a CP2102 to programm the ESP directly with the onboard USB Port
 * Adding a LED breakout to be able to add external leds and / or fets for bigger leds
 * fix the charger circuit
+
 ## Thanks to
-Kasper Skaarhoj for the great work on the Arduino library for the ATEM Controller
+* Kasper Skaarhoj for the great work on the Arduino library for the ATEM Controller
+* [Alasdair Allan](https://github.com/aallan) for the Ethernet Multicast patch!
 
 This Project was born in the Chaostreff Dortmund www.ctdo.de

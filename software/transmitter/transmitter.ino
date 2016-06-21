@@ -1,11 +1,7 @@
-#if 1
-__asm volatile ("nop");
-#endif
-
 #include <SPI.h>         // needed for Arduino versions later than 0018
-#include <Ethernet2.h>
+#include <Ethernet.h>
+#include <EthernetUdp.h>
 #include <ATEM.h>
-#include <EthernetUdp2.h>
 
 // Setup
 
@@ -48,7 +44,7 @@ void setup() {
   time_old = millis();
   AtemSwitcher.begin(atemIP, 56417);    // <= SETUP!
   AtemSwitcher.connect();
-  udp.beginMulti(server, 3000);
+  udp.beginMulticast(server, 3000);
 }
 
 void loop() {
