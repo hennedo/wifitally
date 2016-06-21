@@ -174,7 +174,7 @@ Current status of this Project is still beta. There is some work to be done in t
 * fix the charger circuit
 
 ## Thanks to
-* Kasper Skaarhoj for the great work on the Arduino library for the ATEM Controller
+* [Kasper Skaarhoj](http://skaarhoj.com) for the great work on the Arduino library for the ATEM Controller
 * [Alasdair Allan](https://github.com/aallan) for the Ethernet Multicast patch!
 
 This Project was born in the Chaostreff Dortmund www.ctdo.de
