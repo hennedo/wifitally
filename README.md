@@ -17,13 +17,13 @@ To get the Wifitally to work you will also need to have some sort of Arduino Eth
 * Some sort of FTDI or USB to Serial converter (we will add a Serial to USB bridge in the next Revision)
 
 **Optional requirements**
-* SSD1306 display 128 x 64 in Size, the i2c version (for details see the [Display](#Display) section)
+* SSD1306 display 128 x 64 in Size, the i2c version (for details see the [Display](#display) section)
 
 ## IDE Preparations
 
 * Download Arduino IDE if you do not already have it on your computer (www.arduino.cc)
 * Install the Skaarhoj Libraries (http://skaarhoj.com/wiki/index.php/ATEM\_Arduino\_Library)
-* Patch your Ethernet library. (for details see [Details on the Ethernet lib](#ethernet))
+* Patch your Ethernet library. (for details see [Details on the Ethernet lib](#few-words-on-the-ethernet-library))
 
 ## Usage
 Get the PCB design for the Tally, which is located in hardware/ and get it manufactured by your favourite PCB Manufacturer or do it yourself if you are able to etch two sided PCBs.
@@ -45,7 +45,7 @@ If you misconfigured the Settings, you can again initialize the tally by switchi
 
 The Tally runs on a single cell LiPo battery, you can  (once it's fixed) charge it using the USB Port onboard. Currently the only purpose of the USB Port is to charge the battery.
 
-### <a name="Display"></a> Display
+### Display
 First of all: Unfortunately if you want to have a Display, you will need an Arduino wich has bigger memory than an Arduino UNO.
 If you chose to invest in the SSD1306 Display, you can use it to display stuff like "Low Battery on Tally 2" or "Tally 2 shut down because it's battery is drained". Make shure you have the i2c version and hook up the 4 pins. Should be labeled
 * VCC, which goes to +5V or VCC
@@ -70,7 +70,7 @@ If you got your voltage divider right, do one of the following:
 * Connect your almost empty battery to the Wifitally and open up the configuration page. Hit "Update battery threshold". The Wifitally will use the current voltage of the battery as threshold for the low battery warning.
 * Measure the current voltage of your battery while the tally is powered on, go to the configuration and enter the measured voltage in to the corresponding input (in millivolts please!) and then enter your desired warning and cutoff voltage.
 
-## <a name="ethernet"></a> Few words on the Ethernet Library
+## Few words on the Ethernet Library
 You might run into problems with the Ethernet Library.
 There are different Ethernet Shields available. Some use the W5500 chip, some the W5100.
 The 5100 Chip is supported by the Ethernet library, the W5500 chip needs to have the Ethernet2 lib, which ships with the Arduino IDE from arduino.org.
