@@ -84,7 +84,7 @@ https://github.com/aallan/Arduino/commit/3811729f82ef05f3ae43341022e7b65a92d333a
 
 but change "beginMulti" to "beginMulticast" in both files.
 
-### I am using the W500 chip and will need the Ethernet2 lib
+### I am using the W5500 chip and will need the Ethernet2 lib
 This concerns you most likely if you got your shield from Arduino.org. Or if you use the Ethernet shield with POE Support. It's called "Ethernet Shield 2"
 
 You will have to do some work on the EthernetUdp2 lib, the Transmitter code and the ATEM Lib.
