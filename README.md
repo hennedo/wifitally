@@ -22,7 +22,7 @@ To get the Wifitally to work you will also need to have some sort of Arduino Eth
 ## IDE Preparations
 
 * Download Arduino IDE if you do not already have it on your computer (www.arduino.cc)
-* Install the Skaarhoj Libraries (http://skaarhoj.com/wiki/index.php/ATEM\_Arduino\_Library)
+* Download and install the Skaarhoj Libraries (https://github.com/kasperskaarhoj/SKAARHOJ-Open-Engineering/tree/master/ArduinoLibs)
 * Patch your Ethernet library. (for details see [Details on the Ethernet lib](#few-words-on-the-ethernet-library))
 
 ## Usage
