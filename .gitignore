@@ -4,4 +4,5 @@
 .vscode/c_cpp_properties.json
 .vscode/launch.json
 .vscode/ipch
-
+software/receiver-m5stick/src/html/styles.css
+software/receiver-m5stick/src/html/index.html

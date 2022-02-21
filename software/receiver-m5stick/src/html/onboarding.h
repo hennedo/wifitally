@@ -1,57 +1,131 @@
 #include <ESPAsyncWebServer.h>
 
-const char onboarding_html[] PROGMEM = R"rawliteral(
-<!DOCTYPE HTML><html><head>
-  <title>WifiTally Onboarding</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="/styles.css">
-  </head><body>
-<h1>WifiTally Onboarding</h1>
-<br />
-<div class="container">
-  <div class="row">
-    <div class="col-sm">
+const char onboarding_html[] PROGMEM = R"rawliteral(<!DOCTYPE HTML><html><head>
+    <title>WiFiTally</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+      .fade { opacity: 1; visibility: visible; transition-duration: 200ms; transition-property: opacity, max-height, visibility; max-height: 800px;}
+      .hidden { opacity: 0; visibility: hidden; transition-duration: 200ms; transition-property: opacity, max-height, visibility; max-height: 0px; cursor: none;}
+    </style>
+    </head><body>
+  <div class="container">
+    <div class="columns mt-2">
+      <dic class="column col-2"></dic>
+      <div class="column col-8">
+        <h1>WiFiTally onboarding</h1>
+      </div>
     </div>
-    <div class="col-sm-12 col-md-8 col-lg-6" style="height: calc(100vh - 10.25rem); display: flex; align-items: center; flex: 0 1 auto;">
-      <form action="/configure" method="POST">
-        <fieldset>
-          <legend>Wifi Config</legend>
-            <div class="input-group fluid">
-              <label for="ssid" style="width: 80px;">SSID</label>
-              <input type="text" value="" id="ssid" placeholder="SSID" name="ssid">
-            </div>
-            <div class="input-group fluid">
-              <label for="pwd" style="width: 80px;">Password</label>
-              <input type="password" value="" id="pwd" placeholder="password" name="password">
-            </div>
-            <div class="input-group">
-                <input type="checkbox" id="useDHCP" name="useDHCP" value="true">
-                <label for="useDHCP">Use DHCP</label>
-            </div>
-            <div class="input-group fluid">
-              <label for="ip" style="width: 80px;">IP</label>
-              <input type="text" value="0.0.0.0" id="ip" placeholder="0.0.0.0" pattern="((^|\.)((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]?\d))){4}$" name="ip">
-            </div>
-            <div class="input-group fluid">
-              <label for="subnet" style="width: 80px;">Subnet Mask</label>
-              <input type="text" value="255.255.255.0" id="subnet" placeholder="255.255.255.0" pattern="((^|\.)((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]?\d))){4}$" name="subnet">
-            </div>
-            <div class="input-group fluid">
-              <label for="gateway" style="width: 80px;">Gateway</label>
-              <input type="text" value="0.0.0.0" id="gateway" placeholder="0.0.0.0" pattern="((^|\.)((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]?\d))){4}$" name="gateway">
-            </div>
-            <div class="input-group fluid">
-              <button class="primary">Save</button>
-            </div>
-        </fieldset>
-      </form>
+    <div class="columns mt-2">
+      <div class="column col-2"></div>
+      <div class="card column col-8">
+        <div class="card-header">
+          <div class="card-title h5">Tally Information</div>
+          <div class="card-subtitle text-gray">well. its information!</div>
+        </div>
+        <div class="card-body">
+          <dl>
+            <dt>Hostname</dt>
+            <dd>%hostname%</dd>
+            <dt>Version</dt>
+            <dd>%version%</dd>
+          </dl>
+        </div>
+        
+        <div class="card-footer">
+        </div>
+      </div>
     </div>
-    <div class="col-sm">
+    <div class="columns mt-2">
+      <div class="column col-2"></div>
+      <div class="card column col-8">
+        <form action="/configure" method="POST" class="form-horizontal">
+          <div class="card-header">
+            <div class="card-title h5">WiFi Configuration</div>
+            <div class="card-subtitle text-gray">Requires a reboot.</div>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <div class="col-4 col-sm-12">
+                <label for="ssid" class="form-label">SSID</label>
+              </div>
+              <div class="col-8 col-sm-12">
+                <input class="form-input" type="text" value="" id="ssid" placeholder="SSID" name="ssid">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-4 col-sm-12">
+                <label for="password" class="form-label">Password</label>
+              </div>
+              <div class="col-8 col-sm-12">
+                <input class="form-input" type="password" value="" id="password" placeholder="**********" name="password">
+                <label class="form-checkbox">
+                  <input type="checkbox" onchange="togglePasswordVisibility(this, 'password')">
+                  <i class="form-icon"></i>
+                  Show Password
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-12 col-8 col-ml-auto">
+                <label class="form-switch">
+                  <input type="checkbox" name="useDHCP" id="useDHCP" value="true" checked onchange="toggleVisibility(this, 'network-group', false)">
+                  <i class="form-icon"></i>
+                  Use DHCP
+                </label>
+              </div>
+            </div>
+            <div class="form-group network-group fade">
+              <div class="col-4 col-sm-12">
+                <label for="ip" class="form-label">IP</label>
+              </div>
+              <div class="col-8 col-sm-12">
+                <input class="form-input" type="text" value="0.0.0.0" id="ip" placeholder="0.0.0.0" pattern="((^|\.)((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]?\d))){4}$" name="ip">
+              </div>
+            </div>
+            <div class="form-group network-group fade">
+              <div class="col-4 col-sm-12">
+                <label for="subnet" class="form-label">Subnet Mask</label>
+              </div>
+              <div class="col-8 col-sm-12">
+                <input class="form-input" type="text" value="255.255.255.0" id="subnet" placeholder="255.255.255.0" pattern="((^|\.)((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]?\d))){4}$" name="subnet">
+              </div>
+            </div>
+            <div class="form-group network-group fade">
+              <div class="col-4 col-sm-12">
+                <label for="gateway" class="form-label">Gateway</label>
+              </div>
+              <div class="col-8 col-sm-12">
+                <input class="form-input" type="text" value="0.0.0.0" id="gateway" placeholder="0.0.0.0" pattern="((^|\.)((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]?\d))){4}$" name="gateway">
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button class="btn btn-primary">Save</button>
+          </div>
+        </form>
+      </div>
     </div>
-  </div>
 </div>
-<footer>
-    <p>Copyright &copy;2022 @hennedo</p>
-</footer>
+  <footer class="text-center mt-2">
+      <p>made by <a href="https://github.com/hennedo/wifitally" target="_blank">@hennedo</a></p>
+  </footer>
 
-</body></html>)rawliteral";
+  <script type="text/javascript">
+    function togglePasswordVisibility(src, target) {
+      let elem = document.getElementById(target);
+      if(src.checked) elem.type = 'text';
+      else elem.type = 'password';
+    }
+    function toggleVisibility(src, group, compare) {
+      let elems = document.getElementsByClassName(group);
+      for(let i=0; i<elems.length; i++) {
+        if(src.checked === compare) elems[i].classList.remove('hidden');
+        else elems[i].classList.add('hidden');
+      }
+    }
+    toggleVisibility(document.getElementById('enableBackLED'), 'led-group', true);
+    toggleVisibility(document.getElementById('useDHCP'), 'network-group', false);
+  </script>
+  
+  </body></html>)rawliteral";
