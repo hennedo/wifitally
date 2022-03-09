@@ -1,10 +1,12 @@
 # Tally Receiver for the M5StickC
-Currently only for the M5SticC, not the plus version
+Supports both the original M5StickC and the new M5StickC Plus
 
 ## Building
 Install PlattformIO https://platformio.org/platformio-ide
 
-Open this project folder and change the upload_port in your platformio.ini to match your port and press upload
+Open this project folder and change the upload_port in your [platformio.ini](platformio.ini) to match your port and press upload
+
+If you want to build for the M5StickC Plus, uncomment the two last lines in [platformio.ini](platformio.ini)
 
 ## Features
 

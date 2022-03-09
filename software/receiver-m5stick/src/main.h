@@ -9,6 +9,10 @@
 #include <version.h>
 #include <screens/screens.h>
 #include <screens/menu.h>
+#include <screens/tally.h>
+#include <screens/connecting.h>
+#include <screens/onboarding.h>
+#include <screens/booting.h>
 
 WiFiUDP tallyReceiver;
 byte packetBuffer[512];

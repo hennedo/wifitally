@@ -1,3 +1,4 @@
+#include <screens/screens.h>
 #include <screens/menu.h>
 unsigned int menuItem = 0;
 
@@ -10,7 +11,7 @@ void batteryIcon(M5Canvas canvas, int32_t x, int32_t y)
     int blocks = getBatteryPercentage() / 34 + 1;
     for (int i = 0; i < blocks; i++)
     {
-        canvas.fillRect(x + 1 + (i * 8), y + 1, 7, 5, TFT_GREEN);
+        canvas.fillRect(x + 1 + (i * 8), y + 1, 7, 5, TFT_DARKGREEN);
         if (i < 2)
         {
             canvas.drawLine(x + 1 + (i * 8) + 7, y + 1, x + 1 + (i * 8) + 7, y + 6, TFT_LIGHTGRAY);
@@ -25,7 +26,7 @@ void textLine(M5Canvas canvas, int x, int y, char *text, int index = -1)
     if (index >= 0 && menuItem == index)
     {
         canvas.setTextColor(TFT_WHITE, backColor);
-        canvas.fillRect(x, y, 160, 11, backColor);
+        canvas.fillRect(x, y, DISPLAY_WIDTH, 11, backColor);
     }
     canvas.setCursor(x + 3, y + 2);
     canvas.printf(text);
@@ -34,7 +35,8 @@ void textLine(M5Canvas canvas, int x, int y, char *text, int index = -1)
 M5Canvas menuScreen()
 {
     M5Canvas canvas;
-    canvas.createSprite(160, 80);
+    canvas.createSprite(DISPLAY_WIDTH, DISPLAY_HEIGHT);
+    //canvas.setFont(&fonts::Font2);
     if (M5.BtnA.wasPressed())
     {
         switch (menuItem)
@@ -60,9 +62,9 @@ M5Canvas menuScreen()
         menuItem = (menuItem + 1) % 4;
     }
     int scroll = 0;
-    if (menuItem >= 2)
+    if ((26+(menuItem+4)*12) > DISPLAY_HEIGHT)
     {
-        scroll = -1 * (15 * (menuItem - 1));
+        scroll = -1 * menuItem*12;
     }
     canvas.fillScreen(TFT_BLACK);
     int i = 0;
@@ -99,9 +101,9 @@ M5Canvas menuScreen()
     textLine(canvas, 0, y, (char *)"Exit", i++);
 
     // Draw Menu Bar
-    canvas.fillRect(0, 0, 160, 11, TFT_WHITE);
+    canvas.fillRect(0, 0, DISPLAY_WIDTH, 11, TFT_WHITE);
     canvas.setTextColor(TFT_BLACK, TFT_WHITE);
-    batteryIcon(canvas, 110, 2);
+    batteryIcon(canvas, DISPLAY_WIDTH-50, 2);
     canvas.setCursor(3, 2);
     canvas.setTextSize(1);
     canvas.print("Settings");
