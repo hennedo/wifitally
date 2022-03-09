@@ -1,78 +1,100 @@
 #include <settings.h>
-
 Preferences preferences;
 Settings settings;
 
-unsigned int Settings::getID() {
+unsigned int Settings::getID()
+{
     return id;
 }
 
-char* Settings::getSSID() {
+char *Settings::getSSID()
+{
     return ssid;
 }
-char* Settings::getPassword() {
+char *Settings::getPassword()
+{
     return password;
 }
 
-bool Settings::getUseDHCP() {
+bool Settings::getUseDHCP()
+{
     return useDHCP;
 }
 
-IPAddress Settings::getIPAddress() {
+IPAddress Settings::getIPAddress()
+{
     return ipAddress;
 }
 
-IPAddress Settings::getSubnet() {
+IPAddress Settings::getSubnet()
+{
     return subnet;
 }
 
-IPAddress Settings::getGateway() {
+IPAddress Settings::getGateway()
+{
     return gateway;
 }
 
-bool Settings::isIDWritten() {
+bool Settings::isIDWritten()
+{
     return id == writtenID;
 }
 
-bool Settings::getEnableMiniOverview() {
+bool Settings::getEnableMiniOverview()
+{
     return enableMiniOverview;
 }
 
-bool Settings::getEnableLED() {
+bool Settings::getEnableLED()
+{
     return enableLed;
 }
 
-unsigned int Settings::getBrightness() {
+unsigned int Settings::getBrightness()
+{
     return brightness;
 }
 
-unsigned int Settings::getLEDBrightness() {
+unsigned int Settings::getLEDBrightness()
+{
     return ledBrightness;
 }
 
-void Settings::setEnableMiniOverview(bool v) {
+void Settings::setEnableMiniOverview(bool v)
+{
     enableMiniOverview = v;
     preferences.putBool("enableMiniOverview", v);
 }
 
-void Settings::setEnableLED(bool v) {
+void Settings::setEnableLED(bool v)
+{
     enableLed = v;
     preferences.putBool("enableLed", v);
 }
 
-void Settings::setID(unsigned int _id) {
-    lastChange = millis();
+void Settings::setID(unsigned int _id)
+{
+    lastIDChange = millis();
     id = _id;
 }
 
-void Settings::setWiFiConfig(const char _ssid[33], const char _password[64]) {
+void Settings::setBrightness(unsigned int _brightness)
+{
+    lastBrightnessChange = millis();
+    brightness = _brightness;
+}
+
+void Settings::setWiFiConfig(const char _ssid[33], const char _password[64])
+{
     useDHCP = true;
     strcpy(ssid, _ssid);
     strcpy(password, _password);
     writeWifiConfig();
 }
 
-void Settings::setWiFiConfig(const char _ssid[33], const char _password[64], IPAddress _ip, IPAddress _subnet, IPAddress _gateway) {
+void Settings::setWiFiConfig(const char _ssid[33], const char _password[64], IPAddress _ip, IPAddress _subnet, IPAddress _gateway)
+{
     useDHCP = false;
     strcpy(ssid, _ssid);
     strcpy(password, _password);
@@ -82,7 +104,8 @@ void Settings::setWiFiConfig(const char _ssid[33], const char _password[64], IPA
     writeWifiConfig();
 }
 
-void Settings::setConfig(unsigned int _brightness, unsigned int _ledBrightness, bool _enableLed, bool _enableMiniOverview) {
+void Settings::setConfig(unsigned int _brightness, unsigned int _ledBrightness, bool _enableLed, bool _enableMiniOverview)
+{
     brightness = _brightness;
     ledBrightness = _ledBrightness;
     enableLed = _enableLed;
@@ -90,10 +113,11 @@ void Settings::setConfig(unsigned int _brightness, unsigned int _ledBrightness, 
     writeConfig();
 }
 
-void Settings::clearPreferences() {
+void Settings::clearPreferences()
+{
     id = 0;
     writtenID = 0;
-    lastChange = millis();
+    lastIDChange = millis();
     strcpy(ssid, "");
     strcpy(password, "");
     ipAddress = (uint32_t)0;
@@ -107,12 +131,14 @@ void Settings::clearPreferences() {
     preferences.clear();
 }
 
-void Settings::begin() {
+void Settings::begin()
+{
     preferences.begin("wifitally");
     readAll();
 }
 
-void Settings::readAll() {
+void Settings::readAll()
+{
     id = preferences.getUInt("id", 0);
     brightness = preferences.getUInt("brightness", 15);
     ledBrightness = preferences.getUInt("ledBrightness", 255);
@@ -128,30 +154,50 @@ void Settings::readAll() {
 }
 
 // This should get called every loop in order to minimize wear for id saving
-void Settings::update() {
+void Settings::update()
+{
     // if it did not change for 3 seconds... write it!
-    if(lastChange+3000 <= millis() && writtenID != id) {
+    if (lastIDChange + 3000 <= millis() && writtenID != id)
+    {
         writeID();
+    }
+    if (lastBrightnessChange + 3000 <= millis() && writtenBrightness != brightness)
+    {
+        writeBrightness();
     }
 }
 
-void Settings::writeID() {
+void Settings::writeID()
+{
     Serial.println("writing id to storage");
     writtenID = id;
     preferences.putUInt("id", id);
 }
 
-void Settings::writeConfig() {
-    if(writtenID != id) {
+void Settings::writeBrightness()
+{
+    Serial.println("writing brightness to storage");
+    writtenBrightness = brightness;
+    preferences.putUInt("brightness", brightness);
+}
+
+void Settings::writeConfig()
+{
+    if (writtenID != id)
+    {
         writeID();
+    }
+    if (writtenBrightness != brightness)
+    {
+        writeBrightness();
     }
     preferences.putBool("enableLed", enableLed);
     preferences.putBool("enableMiniOverview", enableMiniOverview);
-    preferences.putUInt("brightness", brightness);
     preferences.putUInt("ledBrightness", ledBrightness);
 }
 
-void Settings::writeWifiConfig() {
+void Settings::writeWifiConfig()
+{
     preferences.putString("ssid", ssid);
     preferences.putString("password", password);
     preferences.putBool("useDHCP", useDHCP);

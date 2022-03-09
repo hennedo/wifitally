@@ -10,11 +10,8 @@ const char index_html[] PROGMEM = R"rawliteral(<!DOCTYPE HTML><html><head>
     </style>
     </head><body>
   <div class="container">
-    <div class="columns mt-2">
-      <dic class="column col-2"></dic>
-      <div class="column col-8">
-        <h1>WiFiTally settings</h1>
-      </div>
+    <div class="text-center mt-2">
+      <h1>WiFiTally settings</h1>
     </div>
     <div class="columns mt-2">
       <div class="column col-2"></div>

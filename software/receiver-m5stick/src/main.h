@@ -7,6 +7,8 @@
 #include <DNSServer.h>
 #include <battery_state.h>
 #include <version.h>
+#include <screens/screens.h>
+#include <screens/menu.h>
 
 WiFiUDP tallyReceiver;
 byte packetBuffer[512];
@@ -21,4 +23,3 @@ void showTally();
 void showConnecting();
 void showBooting();
 void showOnboarding();
-void showMenu();
